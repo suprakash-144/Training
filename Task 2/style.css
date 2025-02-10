@@ -167,7 +167,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert();
       
 }
+.formarea select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 1);
+    color: rgba(255, 255, 255, 1);
 
+}
+.formarea select:focus{
+    outline: none;
+}
+.formarea select option {
+    background: #1F1F1F;
+    color: rgba(128, 128, 128, 1);
+}
+  
 /* media queries */
 
 @media screen and (max-width: 640px) {
@@ -205,6 +223,6 @@ line-height: 20.65px;
     flex-wrap: wrap;
 }
 .equalpart{
-    width: inherit;
+    width: 100%;
 }
 }
