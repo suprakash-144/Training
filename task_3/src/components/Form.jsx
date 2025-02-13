@@ -21,24 +21,32 @@ const Form = ({ setshow }) => {
     },
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
-      console.log(values);
-      toast.success("Hooray Form is submitted!!");
+      try {
+        let savedData = localStorage.getItem("data");
+        let submissions = savedData ? JSON.parse(savedData) : [];
+        localStorage.setItem("data", JSON.stringify([...submissions, values]));
+        console.log([...submissions, values]);
+        toast.success("Hooray Form is submitted!!");
+      } catch (error) {
+        toast.error("Failed!");
+      }
     },
   });
   return (
     <div className="formcontainer">
-      <div className="d-flex align-items-center justify-content-center ">
+      <div className="d-flex flex-column align-items-center justify-content-center  ">
+        <div className="d-flex justify-content-end cross ">
+          <GiCrossMark
+            size={30}
+            onClick={() => setshow(false)}
+            className="cursor"
+          />
+        </div>
         <form
           onSubmit={formik.handleSubmit}
-          className="d-flex flex-column formarea gap-3"
+          className="d-flex flex-column formarea gap-2 w-100"
         >
-          <div className="d-flex justify-content-end ">
-            <GiCrossMark
-              size={30}
-              onClick={() => setshow(false)}
-              className="cursor"
-            />
-          </div>
+          <h2>Sign in</h2>
           <label>Name</label>
           <Custominput
             name="Name"
@@ -94,7 +102,10 @@ const Form = ({ setshow }) => {
             {formik.touched.Course && formik.errors.Course}
           </div>
 
-          <button type="submit" className="btn btn-outline-success fw-bold">
+          <button
+            type="submit"
+            className="btn btn-warning btn-outline-success fw-bold"
+          >
             Submit
           </button>
         </form>
