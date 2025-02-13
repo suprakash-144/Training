@@ -27,6 +27,7 @@ const Form = ({ setshow }) => {
         localStorage.setItem("data", JSON.stringify([...submissions, values]));
         console.log([...submissions, values]);
         toast.success("Hooray Form is submitted!!");
+        formik.resetForm();
       } catch (error) {
         toast.error("Failed!");
       }
