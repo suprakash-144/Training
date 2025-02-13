@@ -3,6 +3,7 @@ import React from "react";
 import { number, object, string } from "yup";
 import Custominput from "./Custominput";
 import { GiCrossMark } from "react-icons/gi";
+import { toast } from "react-toastify";
 
 let RegisterSchema = object({
   name: string().required("Name is required"),
@@ -21,6 +22,7 @@ const Form = ({ setshow }) => {
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
       console.log(values);
+      toast.success("Hooray Form is submitted!!");
     },
   });
   return (
