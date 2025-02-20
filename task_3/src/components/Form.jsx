@@ -7,8 +7,13 @@ import { toast } from "react-toastify";
 
 let RegisterSchema = object({
   name: string().required("Name is required"),
-  email: string().email().required("Email should be valid"),
-  Age: number().required("Age is required"),
+  email: string()
+    .matches(
+      "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$",
+      "Invalid email format"
+    )
+    .required("Email is required"),
+  Age: number().required("Age is required").min(1),
   Course: string().required(),
 });
 const Form = ({ setshow }) => {
