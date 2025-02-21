@@ -20,6 +20,7 @@ const Home = () => {
         <div className="row mainbody">
           {loading ? (
             <div className="row">
+              <Search setdata={setdata} setloading={setloading} />
               <div className="d-flex justify-content-center align-items-center fs-1 fw-bolder">
                 Loading...
               </div>
@@ -40,15 +41,15 @@ const Home = () => {
                       <div className="d-flex flex-wrap gap-3">
                         <Highlights
                           title={"Humidity"}
-                          value={`${data.current_observation.atmosphere.humidity} %`}
+                          value={`${data?.current_observation?.atmosphere.humidity} %`}
                         />
                         <Highlights
                           title={"Pressure"}
-                          value={`${data.current_observation.atmosphere.pressure} pa`}
+                          value={`${data?.current_observation?.atmosphere.pressure} pa`}
                         />
                         <Highlights
                           title={"Visibility"}
-                          value={`${data.current_observation.atmosphere.visibility} km`}
+                          value={`${data?.current_observation?.atmosphere.visibility} km`}
                         />{" "}
                         <div className="cardbody  p-3 col-lg-3 col-md-3 col-sm-12 col-12  ">
                           <div className="title">Sunrise & Sunset</div>

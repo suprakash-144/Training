@@ -10,7 +10,7 @@ const apiFetch = async (search, setloading, setdata) => {
       u: "c",
     },
     headers: {
-      "x-rapidapi-key": process.env.REACT_APP_API_KEY,
+      "x-rapidapi-key": "06bfcbb05amsh2fdd97640f4337cp197408jsn423c36eba7c7",
       "x-rapidapi-host": "yahoo-weather5.p.rapidapi.com",
     },
   };
