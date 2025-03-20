@@ -29,16 +29,14 @@ const Editform = ({ getusers, item, setedit }) => {
     },
     validationSchema: editSchema,
     onSubmit: async (values) => {
-      console.log(values, item._id);
-
-      // try {
-      //   const res = await axios.put(`/${item?._id}`, values, config);
-      //   toast.success("User Edited");
-      //   getusers();
-      // } catch (error) {
-      //   toast.error(error?.data?.message);
-      // }
-      // formik.resetForm();
+      try {
+        const res = await axios.put(`/${item?._id}`, values, config);
+        toast.success("User Edited");
+        getusers();
+        setedit(null);
+      } catch (error) {
+        toast.error(error?.data?.message);
+      }
     },
   });
   return (
@@ -103,6 +101,11 @@ const Editform = ({ getusers, item, setedit }) => {
             <option defaultValue>Please select a option</option>
             <option value="SDE">Software Engineer</option>
             <option value="DEV">Developer</option>
+            <option value="HR">Human Resource</option>
+            <option value="AD">Administrator </option>
+            <option value="BA">Bussiness analyst </option>
+            <option value="TL">Team Lead </option>
+            <option value="PM">Product Managaer </option>
           </select>
           <div className="error">
             {formik.touched.role && formik.errors.role}

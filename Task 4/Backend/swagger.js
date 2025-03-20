@@ -1,5 +1,6 @@
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -9,31 +10,32 @@ const options = {
       description:
         "All endpoints and the request and response formats for the API",
     },
-  },
-  components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
+    servers: [
+      {
+        url: "http://localhost:8000/",
+        description: "Local Development Server",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
-
-  servers: [
-    {
-      url: "http://localhost:8000/",
-    },
-  ],
   apis: ["./Routes/*.js"], // files containing annotations as above
 };
 
 const swaggerSpec = swaggerJsdoc(options);
+
 module.exports = (app) => {
   // Swagger page
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

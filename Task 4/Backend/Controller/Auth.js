@@ -25,13 +25,17 @@ const loginUserCtrl = async (req, res, next) => {
   // check if user exists or not
   const findUser = await User.findOne({ email });
   if (findUser && (await findUser.isPasswordMatched(password))) {
+    let token = generateToken(findUser?._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
     res.json({
       _id: findUser?._id,
       firstname: findUser?.firstname,
       lastname: findUser?.lastname,
       email: findUser?.email,
       mobile: findUser?.mobile,
-      token: generateToken(findUser?._id),
+      token: token,
     });
   } else {
     const error = new Error("Invalid Credentials");
@@ -82,6 +86,7 @@ const updatedUser = async (req, res, next) => {
         lastname: req?.body?.lastname,
         email: req?.body?.email,
         mobile: req?.body?.mobile,
+        role: req?.body?.role,
       },
       {
         new: true,
@@ -100,15 +105,20 @@ const deleteaUser = async (req, res, next) => {
   const { id } = req.params;
   validateMongoDbId(id);
 
-  try {
-    const deleteaUser = await User.findByIdAndDelete(id);
-    res.json({
-      deleteaUser,
-    });
-  } catch (err) {
-    // throw new Error(error);
-    const error = new Error("Delete Failed");
+  if (id == req.user._id) {
+    const error = new Error("Cannot Delete Active user");
     next(error);
+  } else {
+    try {
+      const deleteaUser = await User.findByIdAndDelete(id);
+      res.json({
+        deleteaUser,
+      });
+    } catch (err) {
+      // throw new Error(error);
+      const error = new Error("Delete Failed");
+      next(error);
+    }
   }
 };
 

@@ -41,7 +41,9 @@ const Createform = ({ getusers, setshow }) => {
         const res = await axios.post("/register", values, config);
         toast.success("User Added");
         getusers();
+        setshow((prev) => !prev);
       } catch (error) {
+        setshow((prev) => !prev);
         toast.error(error?.data?.message);
       }
       formik.resetForm();
@@ -49,7 +51,7 @@ const Createform = ({ getusers, setshow }) => {
   });
   return (
     <div className="edit-form ">
-      <div className="d-flex flex-column align-items-center justify-content-center shadow rounded-4 p-2 bg-light formsize">
+      <div className="d-flex flex-column align-items-center justify-content-center shadow rounded-4  bg-light formsize">
         <form
           onSubmit={formik.handleSubmit}
           className="d-flex flex-column formarea gap-2 w-100"
@@ -133,13 +135,18 @@ const Createform = ({ getusers, setshow }) => {
             <option defaultValue>Please select a option</option>
             <option value="SDE">Software Engineer</option>
             <option value="DEV">Developer</option>
+            <option value="HR">Human Resource</option>
+            <option value="AD">Administrator </option>
+            <option value="BA">Bussiness analyst </option>
+            <option value="TL">Team Lead </option>
+            <option value="PM">Product Managaer </option>
           </select>
           <div className="error">
             {formik.touched.role && formik.errors.role}
           </div>
           <button
             type="submit"
-            className="btn btn-warning btn-outline-success fw-bold w-auto "
+            className="btn btn-warning btn-outline-success fw-bold  formbtn"
           >
             Submit
           </button>

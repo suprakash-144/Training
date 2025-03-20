@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { config } from "../config/axiossetup";
 import { useNavigate } from "react-router-dom";
 import Nav from "../Components/Nav";
 import { toast } from "react-toastify";
-import AuthContext from "../context/AuthProvider";
 import axios from "../config/axiossetup";
 import Createform from "../Components/Createform";
 import Editform from "../Components/Editform";
 const Home = () => {
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
   const [users, setusers] = useState();
   const [show, setshow] = useState(false);
   const [edit, setedit] = useState();
@@ -23,7 +21,11 @@ const Home = () => {
       setusers(res?.data);
       setloading(false);
     } catch (error) {
-      navigate("/login", { replace: true });
+      if (localStorage.getItem("token")) {
+        window.location.reload();
+      } else {
+        navigate("/", { replace: true });
+      }
     }
   };
 
@@ -33,7 +35,7 @@ const Home = () => {
       toast.success("User Removed");
       getusers();
     } catch (error) {
-      toast.error("Failed!!");
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -56,11 +58,11 @@ const Home = () => {
             Create User
           </button>
         </div>
-        <div className="d-flex overflow-x-auto shadow rounded-4 p-3">
+        <div className=" overflow-x-auto shadow rounded-4 p-3">
           {!loading ? (
             <table className="table table-hover  table-striped caption-top ">
               <caption>List of users</caption>
-              <thead class="table-dark table-bordered  border-primary">
+              <thead className="table-dark table-bordered  border-primary">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">First Name</th>
@@ -71,7 +73,7 @@ const Home = () => {
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
-              <tbody class="table-group-divider ">
+              <tbody className="table-group-divider ">
                 {users?.map((item, index) => {
                   return (
                     <tr key={index}>

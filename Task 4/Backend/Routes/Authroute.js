@@ -17,6 +17,7 @@ const router = express.Router();
  *     tags:
  *     - Create user
  *     summary: Create a new user
+ *     description: Create a new user
  *     requestBody:
  *       required: true
  *       content:
@@ -78,6 +79,7 @@ router.post("/register", createUser);
  *  post:
  *    tags:
  *    - Login User
+ *    summary: Login User
  *    description: Login User
  *    requestBody:
  *       required: true
@@ -123,6 +125,7 @@ router.post("/login", loginUserCtrl);
  *   get:
  *     tags:
  *     - Get All Users
+ *     summary: Get all Users
  *     description: Get all Users
  *     security:
  *       - bearerAuth: []
@@ -139,6 +142,7 @@ router.get("/all-users", authMiddleware, getallUser);
  *   get:
  *     tags:
  *     - Get update delete  User by ID
+ *     summary: Get a user by id
  *     description: Get a user by id
  *     security:
  *       - bearerAuth: []
@@ -169,6 +173,7 @@ router.get("/all-users", authMiddleware, getallUser);
  *   put:
  *     tags:
  *     - Get update delete  User by ID
+ *     summary: Edit the details of a user
  *     description: Edit the details of a user
  *     security:
  *       - bearerAuth: []
@@ -217,6 +222,7 @@ router.get("/all-users", authMiddleware, getallUser);
  *   delete:
  *     tags:
  *     - Get update delete  User by ID
+ *     summary: delete a user by id
  *     description: delete a user by id
  *     security:
  *       - bearerAuth: []

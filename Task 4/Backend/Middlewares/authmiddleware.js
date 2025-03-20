@@ -14,11 +14,13 @@ const authMiddleware = async (req, res, next) => {
         next();
       }
     } catch (error) {
+      res.status(403);
       const err = new Error("Not authorized token expired,please login agian");
       next(err);
     }
   } else {
     const err = new Error("Token not attached");
+    res.status(403);
     next(err);
   }
 };

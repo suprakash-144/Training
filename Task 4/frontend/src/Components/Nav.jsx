@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthProvider";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { setAuth } = useContext(AuthContext);
-  const { state } = useLocation();
+  const name = localStorage.getItem("name");
+
   const logout = () => {
     localStorage.removeItem("token");
-    setAuth({ state: false, token: null });
+    localStorage.removeItem("name");
     navigate("/", { replace: true });
   };
   return (
@@ -16,7 +15,7 @@ const Nav = () => {
       {" "}
       <div className="container">
         <div className="d-flex justify-content-between">
-          <div className="fs-3">Welcome, {state?.name}</div>
+          <div className="fs-3">Welcome, {name}</div>
           <button className="btn btn-danger" onClick={() => logout()}>
             {" "}
             Logout
