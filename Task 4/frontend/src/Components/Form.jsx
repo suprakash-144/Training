@@ -46,7 +46,7 @@ const Form = () => {
     token && navigate("/home", { replace: true });
   });
   return (
-    <div className="maincontainer  h-100 d-flex  align-items-center justify-content-center">
+    <div className="maincontainer  d-flex  align-items-center justify-content-center">
       <form
         onSubmit={formik.handleSubmit}
         className="d-flex flex-column  gap-2  p-5 rounded shadow loginform"

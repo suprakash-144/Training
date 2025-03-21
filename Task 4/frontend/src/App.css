@@ -20,7 +20,8 @@ body{
 .maincontainer .loginform {
   width: 80%;
   height: 50%;
-  background: url("/public/diego-ph-fIq0tET6llw-unsplash.jpg")center center/cover no-repeat;;
+  background: url("/public/diego-ph-fIq0tET6llw-unsplash.jpg")center center/cover no-repeat;
+ 
 }
 
 
@@ -50,7 +51,7 @@ body{
   padding: 3rem;
 }
 .formbtn{
-  width: 25%; 
+  width: 35%; 
 }
 @media screen and (max-width: 640px) {
   .formsize{
