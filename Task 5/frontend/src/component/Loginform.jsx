@@ -1,11 +1,11 @@
 import { useFormik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { object, string } from "yup";
 import Custominput from "./Custominput";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../config/axios";
-import AuthContext from "../context/AuthProvider";
+import useAuth from "../hooks/useAuth";
 let LoginSchema = object({
   password: string().required("password is required"),
   email: string()
@@ -16,8 +16,10 @@ let LoginSchema = object({
     .required("Email is required"),
 });
 const Loginform = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -26,11 +28,13 @@ const Loginform = () => {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       try {
-        const res = await axios.post("/login", values);
-        localStorage.setItem("token", res?.data?.token);
-
+        const res = await axios.post("/login", values, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+        setAuth({ token: res?.data?.token });
         toast.success("Success");
-        navigate("/", {
+        navigate(from, {
           replace: true,
         });
       } catch (error) {
@@ -42,15 +46,12 @@ const Loginform = () => {
       }
     },
   });
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    token && navigate("/", { replace: true });
-  });
+
   return (
-    <div className="maincontainer  d-flex  align-items-center justify-content-center">
+    <div className="h-100  d-flex  align-items-center justify-content-center">
       <form
         onSubmit={formik.handleSubmit}
-        className="d-flex flex-column  gap-2  p-5 rounded shadow-lg loginform"
+        className="  d-flex flex-column  gap-2  p-5 rounded shadow-lg loginform"
       >
         <h2>Login</h2>
 

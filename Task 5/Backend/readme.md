@@ -6,6 +6,7 @@
 - Mongodb
 - Jwt
 - Bcrypt
+- joi
 - swagger
 
 ## Setup

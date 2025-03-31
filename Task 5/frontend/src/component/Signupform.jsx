@@ -3,7 +3,8 @@ import React from "react";
 import { object, string } from "yup";
 import Custominput from "./Custominput";
 import { toast } from "react-toastify";
-
+import axios from "../config/axios";
+import { useNavigate } from "react-router-dom";
 // schemea for registration
 let RegisterSchema = object({
   name: string().required("Name is required"),
@@ -16,6 +17,7 @@ let RegisterSchema = object({
     .required("Email is required"),
 });
 const Signupform = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -25,6 +27,10 @@ const Signupform = () => {
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
       try {
+        const response = await axios.post("/register", values);
+        toast.success("User Created");
+        navigate("/login", { replace: true });
+        formik.resetForm();
       } catch (error) {
         toast.error(error?.response?.data?.message);
       }

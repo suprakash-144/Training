@@ -7,6 +7,10 @@ const {
   DeleteTodo,
   UpdateTodo,
 } = require("../Controller/TodoController");
+const {
+  todoValidation,
+  todoqueryValidation,
+} = require("../Middlewares/todoschemavalidator");
 const router = express.Router();
 
 /**
@@ -58,7 +62,7 @@ const router = express.Router();
  *         description: Internal Server error
  *
  */
-router.post("/createtodo", authMiddleware, CreateTodo);
+router.post("/createtodo", authMiddleware, todoValidation, CreateTodo);
 
 /**
  * @openapi
@@ -89,7 +93,7 @@ router.post("/createtodo", authMiddleware, CreateTodo);
  *         description: Internal Server error
  */
 
-router.get("/", authMiddleware, GetTodo);
+router.get("/", authMiddleware, todoqueryValidation, GetTodo);
 /**
  * @openapi
  * /todo/{id}:

@@ -36,36 +36,42 @@ const loginUserCtrl = async (req, res, next) => {
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
       maxAge: 72 * 60 * 60 * 1000,
     });
     res.json({
-      _id: findUser?._id,
-      firstname: findUser?.firstname,
-      lastname: findUser?.lastname,
       email: findUser?.email,
-      mobile: findUser?.mobile,
+
       token: generateToken(findUser?._id),
     });
   } else {
     const error = new Error("Invalid Credentials");
+    res.status(401);
     next(error);
   }
 };
 // handle refresh token
 
-const handleRefreshToken = async (req, res) => {
+const handleRefreshToken = async (req, res, next) => {
   const cookie = req.cookies;
-  if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
-  const refreshToken = cookie.refreshToken;
-  const user = await User.findOne({ refreshToken });
-  if (!user) throw new Error(" No Refresh token present in db or not matched");
-  jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
-    if (err || user.id !== decoded.id) {
-      throw new Error("There is something wrong with refresh token");
+  if (!cookie?.refreshToken) next(new Error("No Refresh Token in Cookies"));
+  else {
+    const refreshToken = cookie.refreshToken;
+    const user = await User.findOne({ refreshToken });
+    if (!user)
+      next(new Error(" No Refresh token present in db or not matched"));
+    else {
+      jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
+        if (err || user.id !== decoded.id) {
+          next(new Error("There is something wrong with refresh token"));
+        } else {
+          const accessToken = generateToken(user?._id);
+          res.json({ accessToken });
+        }
+      });
     }
-    const accessToken = generateToken(user?._id);
-    res.json({ accessToken });
-  });
+  }
 };
 
 // logout functionality

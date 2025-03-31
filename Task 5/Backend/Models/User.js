@@ -38,4 +38,4 @@ userSchema.methods.isPasswordMatched = async function (enteredPassword) {
 };
 
 //Export the model
-module.exports = mongoose.model("Client", userSchema);
+module.exports = mongoose.model("clients", userSchema);

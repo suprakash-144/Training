@@ -5,6 +5,10 @@ const {
   handleRefreshToken,
   logout,
 } = require("../Controller/Auth");
+const {
+  signupValidation,
+  loginValidation,
+} = require("../Middlewares/authschemavalidator");
 const router = express.Router();
 
 /**
@@ -53,7 +57,7 @@ const router = express.Router();
  *         description: Internal Server error
  *
  */
-router.post("/register", createUser);
+router.post("/register", signupValidation, createUser);
 /**
  * @openapi
  * '/login':
@@ -99,7 +103,7 @@ router.post("/register", createUser);
  *
  *
  */
-router.post("/login", loginUserCtrl);
+router.post("/login", loginValidation, loginUserCtrl);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logout);
 

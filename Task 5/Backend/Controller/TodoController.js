@@ -17,19 +17,37 @@ const CreateTodo = async (req, res, next) => {
   }
 };
 const GetTodo = async (req, res, next) => {
-  try {
-    let todolist = await Todo.find({ by: req.user._id }).populate({
-      path: "by",
-      select: "name",
-    });
+  const { status } = req?.query;
 
-    res.status(200).send(todolist);
-  } catch (error) {
-    let err = new Error(error);
-    next(err);
+  if (status) {
+    try {
+      let todolist = await Todo.find({ by: req.user._id })
+        .populate({
+          path: "by",
+          select: "name",
+        })
+        .where({ completion: status });
+
+      res.status(200).send(todolist);
+    } catch (error) {
+      let err = new Error(error);
+      next(err);
+    }
+  } else {
+    try {
+      let todolist = await Todo.find({ by: req.user._id }).populate({
+        path: "by",
+        select: "name",
+      });
+
+      res.status(200).send(todolist);
+    } catch (error) {
+      let err = new Error(error);
+      next(err);
+    }
   }
 };
-const UpdateTodo = async (req, res, next) => {
+const UpdateTodo = async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
 
@@ -37,9 +55,9 @@ const UpdateTodo = async (req, res, next) => {
     let newtodo = await Todo.findByIdAndUpdate(
       { _id: id },
       {
-        title: req.body.title,
-        body: req.body.body,
-        completion: req.body.completion,
+        title: req.body?.title,
+        body: req.body?.body,
+        completion: req.body?.completion,
       },
       { new: true }
     );

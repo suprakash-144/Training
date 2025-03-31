@@ -3,29 +3,44 @@ import React from "react";
 import { object, string } from "yup";
 import Custominput from "./Custominput";
 import { toast } from "react-toastify";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 // schemea for Todo card creation
 let TodoSchema = object({
   title: string().required("title is required"),
-  description: string().required("description is required"),
+  body: string().required("description is required"),
 });
-const Todoform = () => {
+const Todoform = ({ getTodo }) => {
+  const axiosPrivate = useAxiosPrivate();
   const formik = useFormik({
     initialValues: {
       title: "",
-      description: "",
+      body: "",
+      completion: false,
     },
     validationSchema: TodoSchema,
     onSubmit: async (values) => {
+      console.log(values);
       try {
+        const response = await axiosPrivate.post("/todo/createtodo", values);
+        getTodo();
       } catch (error) {
-        toast.error(error?.response?.data?.message);
+        if (!error?.response) {
+          toast.error("No Server Respose");
+        } else {
+          toast.error(error?.response?.data?.message);
+        }
+      } finally {
+        formik.resetForm();
       }
     },
   });
   return (
     <div className="d-flex w-100 justify-content-center align-items-center py-2">
-      <form className="d-flex flex-column gap-1 p-2 rounded">
+      <form
+        className="d-flex flex-column gap-1 p-2 rounded"
+        onSubmit={formik.handleSubmit}
+      >
         <Custominput
           classname="shadow"
           name="title"
@@ -41,16 +56,14 @@ const Todoform = () => {
 
         <Custominput
           classname="shadow"
-          name="description"
+          name="body"
           type="text"
           placeholder="Description"
-          value={formik.values.description}
-          onChange={formik.handleChange("description")}
-          onBlur={formik.handleBlur("description")}
+          value={formik.values.body}
+          onChange={formik.handleChange("body")}
+          onBlur={formik.handleBlur("body")}
         />
-        <div className="error">
-          {formik.touched.description && formik.errors.description}
-        </div>
+        <div className="error">{formik.touched.body && formik.errors.body}</div>
 
         <div className="d-flex gap-3">
           <button

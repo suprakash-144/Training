@@ -18,6 +18,11 @@ const options = {
     ],
     components: {
       securitySchemes: {
+        // cookieAuth: {
+        //   type: "http",
+        //   in: "cookie",
+        //   name: "refreshToken",
+        // },
         bearerAuth: {
           type: "http",
           scheme: "bearer",

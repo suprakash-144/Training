@@ -1,8 +1,20 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { MdOutlineEventNote } from "react-icons/md";
+import useAuth from "../hooks/useAuth";
+import axios from "../config/axios";
 const Nav = () => {
   const Navigator = useNavigate();
+  const { auth, setAuth } = useAuth();
+  const logout = () => {
+    try {
+      axios.get("/logout", { withCredentials: true });
+      setAuth(null);
+      Navigator("/", replace);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const loginnavigator = () => {
     Navigator("/login");
   };
@@ -45,30 +57,37 @@ const Nav = () => {
             </li>
           </ul>
           <div className="d-flex gap-3">
-            <button
-              className="btn btn-warning"
-              onClick={() => {
-                signupnavigator();
-              }}
-            >
-              Signup
-            </button>
-            <button
-              className="btn btn-outline-success"
-              onClick={() => {
-                loginnavigator();
-              }}
-            >
-              Login
-            </button>
-            <button
-              className="btn  btn-danger"
-              onClick={() => {
-                loginnavigator();
-              }}
-            >
-              Logout
-            </button>
+            {!auth?.token ? (
+              <>
+                <button
+                  className="btn btn-warning"
+                  onClick={() => {
+                    signupnavigator();
+                  }}
+                >
+                  Signup
+                </button>
+                <button
+                  className="btn btn-outline-success"
+                  onClick={() => {
+                    loginnavigator();
+                  }}
+                >
+                  Login
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="btn  btn-danger"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

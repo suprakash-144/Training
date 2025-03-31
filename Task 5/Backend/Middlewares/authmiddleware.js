@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
         next();
       }
     } catch (error) {
-      res.status(401);
+      res.status(403);
       const err = new Error("Not authorized token expired,please login agian");
       next(err);
     }

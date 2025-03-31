@@ -16,7 +16,12 @@ dbConnect();
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true, // Allow cookies and authorization headers
+  })
+);
 //  sawgger setup
 swagger(app);
 

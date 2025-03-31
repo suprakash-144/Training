@@ -15,9 +15,12 @@ body{
 
 /*  */
 
+.maincontainer{
+  min-height: 90vh;
+}
+
 .maincontainer .loginform {
   width: 80%;
-  height: 50%;
   background: url("/public/image/diego-ph-fIq0tET6llw-unsplash.jpg")center center/cover no-repeat;
  
 }
