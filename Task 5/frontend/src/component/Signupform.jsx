@@ -28,9 +28,11 @@ const Signupform = () => {
     onSubmit: async (values) => {
       try {
         const response = await axios.post("/register", values);
-        toast.success("User Created");
-        navigate("/login", { replace: true });
-        formik.resetForm();
+        if (response?.data) {
+          toast.success("User Created");
+          navigate("/login", { replace: true });
+          formik.resetForm();
+        }
       } catch (error) {
         toast.error(error?.response?.data?.message);
       }

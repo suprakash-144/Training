@@ -10,7 +10,7 @@ let TodoSchema = object({
   title: string().required("title is required"),
   body: string().required("description is required"),
 });
-const Todoform = ({ getTodo }) => {
+const Todoform = ({ setTasks }) => {
   const axiosPrivate = useAxiosPrivate();
   const formik = useFormik({
     initialValues: {
@@ -20,10 +20,11 @@ const Todoform = ({ getTodo }) => {
     },
     validationSchema: TodoSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
         const response = await axiosPrivate.post("/todo/createtodo", values);
-        getTodo();
+        if (response?.data) {
+          setTasks((prev) => [...prev, response.data]);
+        }
       } catch (error) {
         if (!error?.response) {
           toast.error("No Server Respose");
@@ -54,8 +55,8 @@ const Todoform = ({ getTodo }) => {
           {formik.touched.title && formik.errors.title}
         </div>
 
-        <Custominput
-          classname="shadow"
+        <textarea
+          className="shadow form-control"
           name="body"
           type="text"
           placeholder="Description"

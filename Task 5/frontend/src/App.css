@@ -25,3 +25,15 @@ body{
  
 }
 
+/* Tasks */
+
+.tasksize{
+  width: 30%;
+  margin: 0.6rem;
+}
+@media screen and (max-width: 640px){
+  .tasksize{
+    width: 85%;
+    margin: 0.6rem;
+  }
+} 

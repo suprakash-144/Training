@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import { ThreeDot } from "react-loading-indicators";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,25 @@ const PersistLogin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <>{isLoading ? <p>Loading</p> : <Outlet />}</>;
+  return (
+    <>
+      {isLoading ? (
+        <div className="d-flex min-vh-100 justify-content-center align-items-center">
+          <div className="h-100">
+            <ThreeDot
+              variant="bounce"
+              color="#040404"
+              size="medium"
+              text=""
+              textColor=""
+            />
+          </div>
+        </div>
+      ) : (
+        <Outlet />
+      )}
+    </>
+  );
 };
 
 export default PersistLogin;

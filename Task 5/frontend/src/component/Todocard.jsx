@@ -1,34 +1,7 @@
 import React from "react";
 import { IoMdSwitch } from "react-icons/io";
 import { FaRegTrashAlt } from "react-icons/fa";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { toast } from "react-toastify";
-const Todocard = ({ data, getTodo }) => {
-  const axiosPrivate = useAxiosPrivate();
-  const togglestatus = async (id, status) => {
-    try {
-      const response = await axiosPrivate.put(`/todo/${id}`, {
-        completion: !status,
-      });
-      if (response.data) {
-        toast.success("Updated");
-        getTodo();
-      }
-    } catch (error) {
-      toast.error("Failed");
-    }
-  };
-  const deletetodo = async (id) => {
-    try {
-      const response = await axiosPrivate.delete(`/todo/${id}`);
-      if (response.data) {
-        toast.success("Updated");
-        getTodo();
-      }
-    } catch (error) {
-      toast.error("Failed");
-    }
-  };
+const Todocard = ({ data, togglestatus, deletetodo }) => {
   return (
     <div
       className={`d-flex flex-column   p-2 shadow  rounded ${
